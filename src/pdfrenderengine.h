@@ -9,16 +9,6 @@
 #include <QSemaphore>
 #include <QThread>
 
-class SafeThread : public QThread {
-	Q_OBJECT
-
-public:
-	SafeThread();
-	SafeThread(QObject *parent);
-	void wait(unsigned long time = 60000);
-	bool crashed;
-};
-
 class PDFQueue;
 
 class RenderCommand {
@@ -32,12 +22,10 @@ public:
 	int y;
 	int w;
 	int h;
-	Poppler::Page::Rotation rotate;
 	int ticket;
-	bool priority;
 };
 
-class PDFRenderEngine : public SafeThread {
+class PDFRenderEngine : public QThread {
 	Q_OBJECT
 
 public:

@@ -22,7 +22,7 @@ ninja
 wget http://compneuro.uwaterloo.ca/files/publications/stoeckel.2020c.pdf
 
 # Run the test
-./textstudio_poppler_crash_bug stoeckel.2020c.pdf
+./texstudio_poppler_crash_bug stoeckel.2020c.pdf
 ```
 
 You should get an output along the following lines

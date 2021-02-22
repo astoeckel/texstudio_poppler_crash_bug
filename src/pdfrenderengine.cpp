@@ -9,38 +9,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QPainter>
+#include <iostream>
 
 #include "pdfrenderengine.h"
 #include "pdfrendermanager.h"
 
-SafeThread::SafeThread() : QThread(nullptr), crashed(false) {}
-SafeThread::SafeThread(QObject *parent) : QThread(parent), crashed(false) {}
-
-void SafeThread::wait(unsigned long time)
-{
-	if (crashed)
-		return;
-	QThread::wait(time);
-}
-
 RenderCommand::RenderCommand(int p, double xr, double yr, int x, int y, int w,
                              int h)
-    : pageNr(p),
-      xres(xr),
-      yres(yr),
-      x(x),
-      y(y),
-      w(w),
-      h(h),
-      rotate(Poppler::Page::Rotate0),
-      ticket(-1),
-      priority(false)
+    : pageNr(p), xres(xr), yres(yr), x(x), y(y), w(w), h(h), ticket(-1)
 {
 }
 
 PDFRenderEngine::PDFRenderEngine(QObject *parent, PDFQueue *mQueue)
-    : SafeThread(parent), cachedNumPages(0)
+    : QThread(parent), cachedNumPages(0)
 {
 	queue = mQueue;
 	queue->ref();
@@ -60,94 +41,29 @@ void PDFRenderEngine::setDocument(const QSharedPointer<Poppler::Document> &doc)
 
 void PDFRenderEngine::run()
 {
-	forever
-	{
-		bool priorityThread = queue->mPriorityLock.tryLock();
+	while (true) {
 		RenderCommand command(-1);
-		if (priorityThread) {
-			forever
-			{
-				bool leave = false;
-				queue->mCommandsAvailable.acquire();
-				if (queue->stopped) {
-					queue->mPriorityLock.unlock();
-					break;
-				}
-				// get Linedata
-				queue->mQueueLock.lock();
-				command = queue->mCommands.dequeue();
-				if (command.priority) {
-					leave = true;
-				}
-				else {
-					queue->mCommands.prepend(command);
-					queue->mCommandsAvailable.release();
-				}
-				queue->mQueueLock.unlock();
-				if (leave) {
-					queue->mPriorityLock.unlock();
-					break;
-				}
-				msleep(1);
-			}
-		}
-		else {
-			// wait for enqueued lines
-			queue->mCommandsAvailable.acquire();
-			if (queue->stopped)
-				break;
-			// get Linedata
-			queue->mQueueLock.lock();
-			command = queue->mCommands.dequeue();
-			queue->mQueueLock.unlock();
-		}
+		// wait for enqueued lines
+		queue->mCommandsAvailable.acquire();
 		if (queue->stopped)
 			break;
+		// get Linedata
+		queue->mQueueLock.lock();
+		command = queue->mCommands.dequeue();
+		queue->mQueueLock.unlock();
 
 		// render Image
 		if (!document.isNull() && command.pageNr >= 0 &&
 		    command.pageNr < cachedNumPages) {
 			Poppler::Page *page = document->page(command.pageNr);
 			if (page) {
-				QImage image = page->renderToImage(
-				    command.xres, command.yres, command.x, command.y, command.w,
-				    command.h, command.rotate);
-				QSizeF pageSize = page->pageSizeF();
-
-				QPainter p(&image);
-				p.scale(command.xres * pageSize.width() / 72.0,
-				        command.yres * pageSize.height() / 72.0);
-				QPen pen;
-				pen.setWidthF(0.01);
-				pen.setColor(Qt::blue);
-				p.setPen(pen);
-				if (command.x != -1 && command.y != -1)
-					p.translate(command.x, command.y);
-				if (command.rotate != Poppler::Page::Rotate0) {
-					if (command.rotate == Poppler::Page::Rotate90)
-						p.rotate(90);
-					else if (command.rotate == Poppler::Page::Rotate180)
-						p.rotate(180);
-					else if (command.rotate == Poppler::Page::Rotate270)
-						p.rotate(270);
-				}
-				foreach (Poppler::Annotation *annon, page->annotations())
-					if (annon->subType() == Poppler::Annotation::AMovie) {
-						p.drawRect(annon->boundary());
-					}
+				QImage image =
+				    page->renderToImage(command.xres, command.yres, command.x,
+				                        command.y, command.w, command.h);
 
 				delete page;
-				if (!queue->stopped)  // qDebug() << command.ticket << " send
-				                      // from "<<QThread::currentThreadId(),
-					emit sendImage(image, command.pageNr, command.ticket);
 			}
-			// qDebug() << this << " Render page " << command.pageNr << " at "
-			// << command.ticket << priorityThread << "x/y" << command.x <<
-			// command.y << " res "<<command.xres << ", " << command.w <<
-			// command.h;
 		}
 	}
-	// queue->deref();
-	deleteLater();
 }
 

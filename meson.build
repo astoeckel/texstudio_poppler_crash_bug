@@ -18,7 +18,7 @@ moc_files = qt5.preprocess(
 )
 
 executable(
-	'textstudio_poppler_crash_bug',
+	'texstudio_poppler_crash_bug',
 	[
 		'main.cpp',
 		'src/pdfrenderengine.cpp',

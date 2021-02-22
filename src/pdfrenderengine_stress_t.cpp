@@ -8,43 +8,47 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef QT_NO_DEBUG
-
 #include <QCoreApplication>
-
+#include <QThread>
 #include <iostream>
 #include <random>
 
-#include "pdfrendermanager.h"
 #include "pdfrenderengine_stress_t.h"
+#include "pdfrendermanager.h"
 
 void PDFRenderEngineStressTest::test_multithreading(const char *pdf_filename)
 {
-	const size_t N_THREADS = 8; // Can trigger the bug more roboustly with 16
-	const size_t N_IT = 100;
-	const size_t N_REPEAT = 1000;
+	const size_t N_THREADS = 8;
+	const size_t N_IT = 10000;
+	const size_t N_REPEAT = 100;
 
 	std::default_random_engine re(5892190);  // Random engine with fixed seed
 	std::uniform_int_distribution<int> dist_page(0, 20);
 
 	for (size_t j = 0; j < N_REPEAT; j++) {
 		PDFRenderManager manager(this, N_THREADS);
-		PDFRenderManager::Error err = PDFRenderManager::NoError;
 
-		manager.loadDocument(pdf_filename, err, "");
-		manager.setCacheSize(0);  // Keep nothing in the cache
+		if (!manager.loadDocument(pdf_filename)) {
+			std::cerr << "Error loading PDF!" << std::endl;
+			return;
+		}
 
 		for (size_t i = 0; i < N_IT; i++) {
-			std::cerr << "\rIteration " << (j * N_IT + i) << "/"
-			          << (N_REPEAT * N_IT) << std::flush;
+			if (i % 100 == 0) {
+				std::cerr << "\rIteration " << (j * N_IT + i) << "/"
+					      << (N_REPEAT * N_IT) << " ("
+					      << int(((j * N_IT + i + 1) * 100) / (N_REPEAT * N_IT)) << "%)"
+					      << std::flush;
+			}
 
 			// Submit a render job with no receiver object
-			manager.renderToImage(dist_page(re), nullptr, "");
+			manager.renderToImage(dist_page(re));
 
 			// Process signal/slot events
 			QCoreApplication::processEvents();
+
+			QThread::currentThread()->usleep(100);  // 0.1ms
 		}
 	}
 }
 
-#endif  // QT_NO_DEBUG

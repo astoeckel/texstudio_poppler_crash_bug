@@ -11,8 +11,6 @@
 #ifndef PDFRENDERENGINE_STRESS_T_H
 #define PDFRENDERENGINE_STRESS_T_H
 
-#ifndef QT_NO_DEBUG
-
 #include <QObject>
 
 /**
@@ -26,5 +24,4 @@ public slots:
 	void test_multithreading(const char *pdf_filename);
 };
 
-#endif  // QT_NO_DEBUG
 #endif  // PDFRENDERENGINE_STRESS_T_H
