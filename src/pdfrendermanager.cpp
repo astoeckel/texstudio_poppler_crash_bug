@@ -62,7 +62,6 @@ void PDFRenderManager::stopRendering()
 
 bool PDFRenderManager::loadDocument(const QString &fileName)
 {
-	Poppler::Document *docPtr;
 	try {
 		document = QSharedPointer<Poppler::Document>(
 		    Poppler::Document::load(fileName));
