@@ -36,9 +36,9 @@ void PDFRenderEngineStressTest::test_multithreading(const char *pdf_filename)
 		for (size_t i = 0; i < N_IT; i++) {
 			if (i % 100 == 0) {
 				std::cerr << "\rIteration " << (j * N_IT + i) << "/"
-					      << (N_REPEAT * N_IT) << " ("
-					      << int(((j * N_IT + i + 1) * 100) / (N_REPEAT * N_IT)) << "%)"
-					      << std::flush;
+				          << (N_REPEAT * N_IT) << " ("
+				          << int(((j * N_IT + i + 1) * 100) / (N_REPEAT * N_IT))
+				          << "%)" << std::flush;
 			}
 
 			// Submit a render job with no receiver object
