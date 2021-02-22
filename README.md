@@ -27,7 +27,7 @@ wget http://compneuro.uwaterloo.ca/files/publications/stoeckel.2020c.pdf
 
 You should get an output along the following lines
 ```
-Iteration 1/100000"/proc/81491/root"
-Iteration 20299/100000textstudio_poppler_crash_bug: strtod_l.c:1497: ____strtod_l_internal: Assertion `numsize == 1 && n < d' failed.
+Iteration 0/1000000 (0%)"/proc/253266/root"
+Iteration 236100/1000000 (23%)texstudio_poppler_crash_bug: strtod_l.c:1497: ____strtod_l_internal: Assertion `numsize == 1 && n < d' failed.
 Aborted (core dumped)
 ```
