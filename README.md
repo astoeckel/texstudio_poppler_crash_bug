@@ -5,6 +5,7 @@ See
 * https://github.com/texstudio-org/texstudio/issues/1409
 * https://github.com/texstudio-org/texstudio/pull/1463
 * https://github.com/texstudio-org/texstudio/pull/1498
+
 for more information.
 
 This code uses the `meson` build system. You'll need to install `meson` via `pip`,
