@@ -7,7 +7,7 @@ as well as `ninja`.
 To build, run the followingq
 ```sh
 # Clone the repository
-git clone git@github.com/astoeckel/texstudio_poppler_crash_bug
+git clone git@github.com:astoeckel/texstudio_poppler_crash_bug
 
 # Create and change into the build directory
 cd texstudio_poppler_crash_bug
