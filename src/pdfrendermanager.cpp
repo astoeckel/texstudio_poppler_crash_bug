@@ -91,7 +91,7 @@ void PDFRenderManager::renderToImage(int pageNr)
 	if (document.isNull() || (pageNr < 0 || pageNr >= cachedNumPages)) {
 		return;
 	}
-	RenderCommand cmd(pageNr);
+    RenderCommand cmd(pageNr,20.0,20.0);
 	enqueue(cmd);
 }
 
