@@ -8,10 +8,12 @@ See
 
 for more information.
 
-This code uses the `meson` build system. You'll need to install `meson` via `pip`,
-as well as `ninja`.
+## Building and Running
 
-To build, run the followingq
+We provide both a `meson` build definition, as well as a `qmake` project file.
+To build with `meson` you'll need to install `meson` via `pip`, as well as `ninja`.
+
+To build, run the following:
 ```sh
 # Clone the repository
 git clone git@github.com:astoeckel/texstudio_poppler_crash_bug
@@ -31,7 +33,6 @@ wget http://compneuro.uwaterloo.ca/files/publications/stoeckel.2020c.pdf
 # Run the test
 ./texstudio_poppler_crash_bug stoeckel.2020c.pdf
 ```
-
 You should get an output along the following lines
 ```
 Iteration 0/1000000 (0%)"/proc/253266/root"
