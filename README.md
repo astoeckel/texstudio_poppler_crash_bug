@@ -11,9 +11,7 @@ for more information.
 ## Building and Running
 
 We provide both a `meson` build definition, as well as a `qmake` project file.
-To build with `meson` you'll need to install `meson` via `pip`, as well as `ninja`.
-
-To build, run the following:
+To build with `meson` you'll need to install `meson` via `pip`, as well as `ninja`; then, run the following:
 ```sh
 # Clone the repository
 git clone git@github.com:astoeckel/texstudio_poppler_crash_bug
