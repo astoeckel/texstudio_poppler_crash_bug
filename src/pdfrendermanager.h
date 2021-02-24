@@ -25,6 +25,7 @@ public:
 	QQueue<RenderCommand> mCommands;
 	QSemaphore mCommandsAvailable;
 	QMutex mQueueLock;
+	QMutex mDocumentLock;
 	std::atomic<bool> stopped;
 
 	int num_renderQueues;

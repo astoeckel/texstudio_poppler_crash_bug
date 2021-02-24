@@ -55,13 +55,17 @@ void PDFRenderEngine::run()
 		// render Image
 		if (!document.isNull() && command.pageNr >= 0 &&
 		    command.pageNr < cachedNumPages) {
+			queue->mDocumentLock.lock();
 			Poppler::Page *page = document->page(command.pageNr);
+			queue->mDocumentLock.unlock();
 			if (page) {
 				QImage image =
 				    page->renderToImage(command.xres, command.yres, command.x,
 				                        command.y, command.w, command.h);
 
+				queue->mDocumentLock.lock();
 				delete page;
+				queue->mDocumentLock.unlock();
 			}
 		}
 	}
