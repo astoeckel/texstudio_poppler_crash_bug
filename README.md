@@ -5,6 +5,7 @@ See
 * https://github.com/texstudio-org/texstudio/issues/1409
 * https://github.com/texstudio-org/texstudio/pull/1463
 * https://github.com/texstudio-org/texstudio/pull/1498
+* https://gitlab.freedesktop.org/poppler/poppler/-/issues/1050
 
 for more information.
 
