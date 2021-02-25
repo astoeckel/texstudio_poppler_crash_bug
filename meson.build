@@ -2,6 +2,8 @@ project('texstudio_poppler_crash_bug', 'cpp')
 
 dep_poppler = dependency('poppler')
 dep_poppler_qt5 = dependency('poppler-qt5')
+dep_poppler_cpp = dependency('poppler-cpp')
+dep_threads = dependency('threads')
 
 inc = include_directories('src')
 
@@ -31,4 +33,16 @@ executable(
 		dep_poppler,
 		dep_poppler_qt5,
 		dep_qt5
+	])
+
+executable(
+	'texstudio_poppler_crash_bug_simple',
+	[
+		'main_simple.cpp',
+	],
+	include_directories: inc,
+	dependencies: [
+		dep_poppler,
+		dep_poppler_cpp,
+		dep_threads
 	])
