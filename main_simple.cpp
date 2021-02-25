@@ -1,5 +1,5 @@
 // Compile using
-// g++ -o texstudio_poppler_crash_bug_simple main_simple.cpp -lpthread `pkg-config poppler poppler-cpp -cflags -libs`
+// g++ -O1 -g -o texstudio_poppler_crash_bug_simple main_simple.cpp -lpthread `pkg-config poppler poppler-cpp -cflags -libs`
 
 #include <poppler-document.h>
 #include <poppler-page.h>
