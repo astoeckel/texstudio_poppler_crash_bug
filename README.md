@@ -23,7 +23,7 @@ wget http://compneuro.uwaterloo.ca/files/publications/stoeckel.2020c.pdf
 g++ -O1 -g -o texstudio_poppler_crash_bug_simple main_simple.cpp -lpthread `pkg-config poppler poppler-cpp -cflags -libs`
 
 # Run
-./texstudio_poppler_crash_bug stoeckel.2020c.pdf
+./texstudio_poppler_crash_bug_simple stoeckel.2020c.pdf
 ```
 
 You should get an output similar to the following:
