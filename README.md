@@ -14,6 +14,7 @@ To compile and run either follow the instructions for the Qt version below or si
 ```
 # Clone the repository
 git clone git@github.com:astoeckel/texstudio_poppler_crash_bug
+cd texstudio_poppler_crash_bug
 
 # Download some test data
 wget http://compneuro.uwaterloo.ca/files/publications/stoeckel.2020c.pdf
